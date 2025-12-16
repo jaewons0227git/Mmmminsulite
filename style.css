@@ -1,0 +1,1290 @@
+/* 🌟🌟🌟 CSS 변수 시스템 🌟🌟🌟 */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #111827;
+  --text-sub: #4b5563;
+  --border-color: #e5e8eb;
+  --surface-color: #ffffff; 
+  --surface-secondary: #f1f4f9; 
+  --surface-hover: #f9fafb;
+  
+  --accent-color: #111827;
+  --primary-blue: #1d6fef;
+  --error-red: #ef4444;
+  --image-purple: #8b5cf6;
+
+  --send-button-disabled: #e5e8eb;
+  --send-button-enabled: #111827; 
+  --send-button-icon: #ffffff;
+
+  --composer-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+
+  --font-size: 16px;
+  --line-height: 1.4;
+  --line-height-px: 22.4; 
+  --min-textarea-height: 22.4px; 
+  --min-input-container-height: 48px; 
+  
+  --sidebar-width: 300px;
+  --mini-sidebar-width: 60px; /* PC 미니 사이드바 너비 */
+  
+  /* 헤더 버튼 배경 */
+  --header-btn-bg: #f1f4f9;
+  --modal-overlay-blur: rgba(255, 255, 255, 0.7); /* 새로 추가: 라이트 모드 블러 배경색 */
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', 'Helvetica Neue', Arial, sans-serif;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #e5e5e5;
+  --text-sub: #a3a3a3;
+  --border-color: #333333;
+  --surface-color: #1e1e1e;
+  --surface-secondary: #2c2c2c;
+  --surface-hover: #3d3d3d;
+
+  --accent-color: #e5e5e5;
+  --primary-blue: #3b82f6;
+  --image-purple: #a78bfa;
+  
+  --send-button-disabled: #333333;
+  --send-button-enabled: #e5e5e5;
+  --send-button-icon: #121212;
+
+  --composer-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --modal-overlay: rgba(0, 0, 0, 0.8);
+
+  --modal-overlay-blur: rgba(0, 0, 0, 0.6); /* 새로 추가: 다크 모드 블러 배경색 */
+  
+  /* 다크모드 헤더 버튼 배경 (이미지와 비슷하게 어둡게) */
+  --header-btn-bg: #2c2c2c;
+
+  /* ▼▼▼ [새로 추가할 코드: 정지 버튼 색상 - 다크 모드] ▼▼▼ */
+    .stop-btn {
+        /* 배경 색상: 다크 모드에서 흰색 */
+        background-color: var(--surface-color); 
+    }
+    .stop-btn .material-symbols-rounded {
+        /* 아이콘 색상: 다크 모드에서 검은색 */
+        color: var(--text-color); 
+    }
+}
+
+/* 폰트 설정 */
+body :is(
+    .header-title, .plus-btn, .action-btn, 
+    .message-text, .input-container textarea,
+    .modal-grid-item, .modal-option,
+    .thinking-indicator-text, button, .ui-style-btn,
+    .sidebar-list-item-title, .sidebar-header
+) {
+    font-family: 'Elms Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.material-symbols-rounded {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+
+.stop-btn .stop-icon {
+    display: block; width: 12px; height: 12px; background-color: white; border-radius: 2px;
+}
+.stop-btn {
+    background-color: var(--error-red); width:38px; height:38px; border-radius: 50%; display:flex; align-items:center; justify-content:center; padding: 0; margin: 0;
+}
+
+/* 기본 스타일 */
+*{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+body{ margin:0; background:var(--bg-color); color:var(--text-color); min-height:100vh; display:flex; justify-content:center; padding:0; transition: background-color 0.3s ease, color 0.3s ease; }
+
+.phone{
+  width:100%; background:var(--bg-color); border-radius:0; border:none; display:flex; flex-direction:column; min-height:100vh; position:relative; margin: 0;
+  transition: background-color 0.3s ease;
+  height: 100vh; 
+  overflow: hidden; 
+}
+
+/* 🌟 [수정] Header 스타일 변경 (로고 제거, 커스텀 스타일 적용) */
+.header{
+  display:flex; justify-content:space-between; align-items:center; padding:10px 16px; height:64px; border-bottom:none; 
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100; 
+  background: var(--bg-color); 
+  /* box-shadow 제거 */
+  box-shadow: none; 
+  transition: background-color 0.3s ease, left 0.3s ease, width 0.3s ease; 
+}
+
+/* 왼쪽 원형 메뉴 버튼 */
+.header-btn-circle {
+    width: 44px; height: 44px;
+    background-color: var(--header-btn-bg);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: background-color 0.2s;
+}
+.header-btn-circle:hover {
+    filter: brightness(0.95);
+}
+[data-theme="dark"] .header-btn-circle:hover { filter: brightness(1.1); }
+
+/* 오른쪽 알약 모양 그룹 */
+.header-pill-group {
+    display: flex;
+    align-items: center;
+    background-color: var(--header-btn-bg);
+    border-radius: 30px;
+    padding: 4px 6px;
+    gap: 2px;
+}
+
+.header-icon {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-color);
+    cursor: pointer;
+    flex-shrink: 0;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+.header-icon:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+[data-theme="dark"] .header-icon:hover { background-color: rgba(255,255,255,0.1); }
+
+.header-icon .material-symbols-rounded { font-size: 22px; }
+
+/* 기존 스타일 유지 */
+.plus-btn{
+  background-color: #f1f4ff; color: #1d6fef; font-weight:600; padding:4px 10px; border-radius:16px; display:flex; align-items:center; gap:4px; font-size:12px; cursor: pointer; line-height: 1.2;
+}
+[data-theme="dark"] .plus-btn { background-color: #2d3748; color: #93c5fd; }
+
+@media (max-width: 600px) {
+    .plus-btn::after { content: "Beta"; display: inline; }
+    .plus-btn { padding: 4px 8px; }
+    .plus-btn > span { display: none; }
+}
+@media (min-width: 601px) { .plus-btn > span { display: inline; } }
+
+/* Content */
+.content-wrapper{
+    flex-grow:1; display:flex; flex-direction:column; 
+    overflow-y: auto; 
+    padding-bottom: 0; position: relative;
+    padding-top: 64px; /* Header Height 증가에 따른 수정 */
+    opacity: 0; transform: translateY(20px); 
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out, margin-left 0.3s ease; 
+    scroll-behavior: auto; 
+}
+.content-wrapper.loaded { opacity: 1; transform: translateY(0); }
+
+#initial-content{
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; max-width: 400px; display:flex; flex-direction:column; align-items:center; text-align:center; padding: 0 16px; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+.main-question{ font-size:22px; font-weight:600; margin-bottom:40px; color:var(--text-color); }
+
+.quick-actions{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; max-width:400px; }
+.action-btn{
+  display:flex; align-items:center; justify-content:center; padding:10px 16px; 
+  border:1px solid var(--border-color); background-color: var(--surface-color);
+  border-radius:30px; font-size:15px; font-weight:500; color:var(--text-color); min-height:48px; white-space:nowrap; cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.action-btn:hover { background-color: var(--surface-hover); }
+.action-btn .material-symbols-rounded, .action-btn .icon-light{ margin-right:6px; width:20px; height:20px; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+
+.action-btn.new-green .material-symbols-rounded{ color:#28a745; }
+.action-btn.new-blue .material-symbols-rounded{ color:#007bff; }
+.action-btn.orange .material-symbols-rounded{ color:#fd7e14; } 
+
+/* Chat Messages */
+/* 🌟 [수정] 모바일에서는 기본 패딩 (10px 16px) */
+.chat-messages{ width: 100%; padding: 10px 16px; padding-top: 10px; display: none; flex-direction: column; justify-content: flex-start; gap: 10px; margin: 0 auto; box-sizing: border-box; }
+
+/* 🌟 [수정] PC 버전에서만 패딩을 넓게 설정 */
+@media (min-width: 769px) { 
+    .chat-messages { 
+        max-width: 860px; /* PC에서 너무 넓어지지 않도록 최대폭 설정 */
+        padding-left: 30px; 
+        padding-right: 30px; 
+    } 
+}
+
+/* 🌟🌟🌟 메시지 애니메이션 (Fade In) 🌟🌟🌟 */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message-bubble{ 
+    display: flex; max-width: 80%; 
+    animation: fadeInUp 0.4s ease-out forwards; /* 메시지 등장 애니메이션 */
+}
+
+.message-text{ padding: 10px 14px; border-radius: 20px; line-height: 1.4; font-size: 15px; white-space: pre-wrap; }
+.user-message{ justify-content: flex-end; align-self: flex-end; flex-direction: column; align-items: flex-end; }
+.user-message .message-text{ background-color: var(--surface-secondary); color: var(--text-color); border-bottom-right-radius: 4px; transition: background-color 0.3s, color 0.3s; }
+
+/* 🌟 [신규] 사용자 이미지 스타일 */
+.user-message-image {
+    max-width: 200px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.bot-message{ 
+    align-self: flex-start; margin-top: 10px; padding: 0; color: var(--text-color); line-height: 1.4; font-size: 15px; width: 100%;
+    animation: fadeInUp 0.4s ease-out forwards; /* 봇 메시지 등장 애니메이션 */
+}
+.bot-message .streaming-block { display: block; padding: 0; border-radius: 0; background-color: transparent; max-width: 100%; box-sizing: border-box; white-space: normal; color: var(--text-color); margin-bottom: 8px; }
+
+/* 🌟 [수정] 부드러운 스트리밍을 위해 내부 요소 애니메이션은 제거 (JS에서 처리) */
+.streaming-block > * {
+    /* 개별 요소 애니메이션은 제거하여 깜빡임 방지 */
+}
+
+.stop-message { color: var(--error-red); font-weight: 600; font-size: 0.9em; margin-top: -5px; margin-bottom: 10px; padding: 0 4px; align-self: flex-start; }
+
+.streaming-block code { background-color: var(--surface-secondary); padding: 2px 4px; border-radius: 4px; font-family: monospace; color: var(--text-color); }
+.streaming-block pre { background-color: var(--surface-secondary); padding: 12px; border-radius: 8px; overflow-x: auto; margin: 8px 0; }
+.streaming-block pre code { background-color: transparent; padding: 0; color: inherit; }
+
+/* Markdown 리스트 스타일링 보완 */
+.streaming-block ul, .streaming-block ol { padding-left: 20px; margin: 8px 0; }
+.streaming-block li { margin-bottom: 4px; }
+.streaming-block p { margin: 8px 0; }
+.streaming-block h1, .streaming-block h2, .streaming-block h3 { margin-top: 16px; margin-bottom: 8px; font-weight: 600; }
+
+.bot-actions { display: flex; gap: 8px; margin-top: 0px; padding: 4px 0; transition: opacity 0.3s; }
+.bot-actions .regenerate { opacity: 0.5; pointer-events: none; }
+.bot-action-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: #9ca3af; cursor: pointer; border-radius: 50%; transition: background-color 0.2s; }
+.bot-action-btn:hover { background-color: var(--surface-hover); }
+.bot-action-btn.selected { color: var(--text-color); }
+.bot-action-btn.selected.like { color: var(--primary-blue); }
+.bot-action-btn.selected.dislike { color: var(--error-red); }
+.bot-action-btn .material-symbols-rounded { font-size: 16px; }
+
+/* Thinking Indicator */
+.thinking-indicator { display: flex; justify-content: flex-start; align-items: center; padding: 10px 0; margin-bottom: 8px; transition: transform 0.5s ease-out; }
+.thinking-indicator.left-aligned { transform: translateX(0); }
+.thinking-indicator-text {
+    font-weight: 500; margin-right: 8px; margin-top: 0; flex-shrink: 0;
+    background-color: var(--text-color); 
+    background-image: linear-gradient(90deg, var(--text-color) 0%, var(--bg-color) 20%, var(--text-color) 40%);
+    background-size: 200% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: shimmer 1.5s infinite linear;
+}
+.thinking-indicator-text.completed { display: none !important; } /* 🌟 완료 시 텍스트 숨김 */
+/* 🌟 [신규] 답변 중지됨 스타일 */
+.thinking-indicator-text.stopped {
+    background-image: none;
+    -webkit-text-fill-color: #9ca3af; /* 밝은 회색 */
+    color: #9ca3af;
+    animation: none;
+}
+
+/* 🌟 스피너 숨김 */
+.loading-spinner {
+    display: none !important; 
+}
+
+@keyframes spin-custom {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(1440deg); }
+}
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+
+/* ============================================ */
+/* 🌟🌟🌟 입력창 (Composer) 스타일 🌟🌟🌟 */
+/* ============================================ */
+
+.composer {
+    position: fixed; 
+    bottom: 0; left: 0; right: 0; 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    z-index: 20; /* 그라데이션 오버레이보다 위로 */
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s, all 0.2s ease-out, left 0.3s ease, width 0.3s ease; 
+    background-color: var(--bg-color); 
+}
+.composer.loaded { opacity: 1; transform: translateY(0); }
+
+/* 🌟 비네팅 그라데이션 오버레이 */
+.composer-gradient-overlay {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 200px; /* 그라데이션 높이 */
+    background: linear-gradient(to top, var(--bg-color) 20%, rgba(255,255,255,0) 100%);
+    z-index: 15; /* 콘텐츠 위, 컴포저 아래 */
+    pointer-events: none; /* 클릭 통과 */
+}
+[data-theme="dark"] .composer-gradient-overlay {
+    background: linear-gradient(to top, var(--bg-color) 20%, rgba(18,18,18,0) 100%);
+}
+
+.composer-inner {
+    display: flex; align-items: center; width: 100%; transition: all 0.3s ease;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    /* 🌟 컴포저 자체의 배경 불투명도 보장 */
+    position: relative;
+    z-index: 21;
+}
+
+/* 🌟 [수정] 입력 영역 래퍼: 항상 세로 정렬 */
+.input-area-wrapper { 
+    flex: 1; margin-bottom: 0; 
+    display: flex; flex-direction: column; /* 무조건 컬럼 */
+    width: 100%; 
+    min-width: 0; /* Flexbox 축소 방지 */
+}
+
+.image-mode-indicator {
+    display: none; 
+    align-items: center; 
+    justify-content: space-between;
+    background-color: rgba(139, 92, 246, 0.1); 
+    color: var(--image-purple);
+    padding: 8px 12px; 
+    margin-bottom: 4px; 
+    border-radius: 12px;
+    font-size: 13px; 
+    font-weight: 600;
+}
+.image-mode-indicator span { display: flex; align-items: center; gap: 6px; }
+.close-image-mode { cursor: pointer; opacity: 0.7; display: flex; align-items: center; }
+.close-image-mode:hover { opacity: 1; }
+
+/* 🌟 [신규] 파일 미리보기 영역 */
+.attachment-area {
+    display: none; /* JS에서 flex로 변경됨 */
+    padding: 8px 4px;
+    margin-bottom: 4px;
+    width: 100%;
+}
+.attachment-preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+}
+.file-chip {
+    display: flex;
+    align-items: center;
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 13px;
+    max-width: 100%;
+}
+.file-info {
+    display: flex;
+    flex-direction: column;
+    margin-right: 8px;
+    max-width: 150px;
+}
+.file-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-color);
+}
+.file-size {
+    font-size: 11px;
+    color: var(--text-sub);
+}
+.file-delete {
+    cursor: pointer;
+    color: var(--text-sub);
+    display: flex;
+    align-items: center;
+}
+.file-delete:hover {
+    color: var(--error-red);
+}
+
+.input-container {
+    flex: 1; display: flex; align-items: center; gap: 8px; 
+    box-sizing: border-box; 
+    min-height: var(--min-input-container-height); 
+    overflow: hidden;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.input-container textarea {
+    flex: 1; border: 0; outline: 0; background: transparent; color: var(--text-color); 
+    font-size: var(--font-size); min-width: 0; resize: none; 
+    min-height: var(--min-textarea-height); overflow-y: hidden; 
+    padding: 0; line-height: var(--line-height); vertical-align: middle; 
+    align-self: center; font-family: inherit; 
+}
+.input-container textarea::placeholder { color: #9ca3af; font-family: inherit; }
+
+.mic-voice-container { display: flex; gap: 8px; flex-shrink: 0; margin-bottom: 0; }
+
+.send-btn, .stop-btn {
+    width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-left: 0; margin-right: 4px; transition: background-color 0.2s ease; cursor: pointer;
+}
+.send-btn:not(.active) { background-color: var(--send-button-disabled); pointer-events: none; }
+.send-btn.active { background-color: var(--send-button-enabled); pointer-events: auto; }
+.send-btn .material-symbols-rounded { color: var(--send-button-icon); font-size: 20px; }
+
+.mic-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #9ca3af; }
+.mic-icon .material-symbols-rounded { font-size: 20px; }
+
+/* 📌 스타일 1: 심플 (Simple) */
+.composer.style-simple {
+    background: var(--bg-color);
+    padding: 0 16px 24px 16px;
+    border: none;
+    box-shadow: none;
+}
+
+.composer.style-simple .composer-inner {
+    max-width: 768px;
+    border-radius: 35px; /* 더 둥글게 수정 */
+    padding: 12px 16px 12px 20px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    position: relative;
+    transition: height 0.3s ease, padding 0.3s ease; 
+}
+[data-theme="dark"] .composer.style-simple .composer-inner { box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+
+/* 🌟 [수정] 심플 모드에서도 input-area-wrapper는 그대로 (세로 정렬 유지) */
+.composer.style-simple .input-area-wrapper {
+    margin-bottom: 10px;
+}
+
+/* [수정 후] */
+.composer.style-simple .input-container {
+    flex: 1; /* 이 부분이 핵심입니다. 남은 공간을 모두 차지하되, 필요하면 줄어들 수 있게 함 */
+    border: none; background: transparent; padding: 0; border-radius: 0; 
+    max-height: 150px; min-height: 24px; 
+    min-width: 0; /* Flexbox 내에서 컨테이너가 축소될 수 있도록 최소 너비 0 설정 */
+}
+
+.composer.style-simple .input-container textarea { font-size: 17px; padding: 0; }
+.composer.style-simple .plus { display: none; }
+
+.composer.style-simple .bottom-controls {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+}
+
+/* [수정 후] */
+.simple-tools { 
+    display: flex; gap: 8px; margin-top: 0; 
+    flex-shrink: 1; /* ✅ 공간이 부족할 때 그룹 전체가 축소되도록 허용 */
+    min-width: 0;  /* ✅ Flexbox 내에서 축소를 더 잘 처리하기 위해 추가 */
+}
+
+/* [수정 후] */
+.tool-btn {
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    height: 38px; /* 전송 버튼과 높이 동일하게 설정 */
+    padding: 0 14px 0 10px; /* 내부 여백 조절 */
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 13px; font-weight: 500; color: var(--text-sub);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    white-space: nowrap; line-height: 1.2;
+}
+.tool-btn:hover { background-color: var(--surface-hover); }
+.tool-btn .material-symbols-rounded { font-size: 18px; color: #6b7280; }
+
+.tool-btn.active-blue {
+    border-color: var(--primary-blue); background-color: rgba(59, 130, 246, 0.1); color: var(--primary-blue);
+}
+.tool-btn.active-blue .material-symbols-rounded { color: var(--primary-blue); }
+
+.tool-btn.active-purple {
+    border-color: var(--image-purple); background-color: rgba(139, 92, 246, 0.1); color: var(--image-purple);
+}
+.tool-btn.active-purple .material-symbols-rounded { color: var(--image-purple); }
+
+.composer.style-simple .right-controls { display: flex; align-items: center; margin-left: 8px; margin-bottom: 0; }
+.composer.style-simple .mic-icon { display: none; } 
+
+.composer.style-simple .send-btn { background-color: var(--send-button-enabled); margin-right: 0; align-self: center; }
+.composer.style-simple .send-btn .material-symbols-rounded { color: var(--send-button-icon); }
+.composer.style-simple .send-btn:not(.active) { background-color: var(--send-button-disabled); }
+
+/* ▼▼▼ [새로 추가할 코드: 중지 버튼 위치 보정] ▼▼▼ */
+.composer.style-simple .stop-btn {
+    margin-right: 0;       /* 전송 버튼과 동일하게 우측 여백 제거 */
+    align-self: center;    /* 수직 중앙 정렬 */
+}
+
+/* ▼▼▼ [새로 추가할 코드: 정지 버튼 색상 - 화이트 모드] ▼▼▼ */
+.stop-btn {
+    /* 배경 색상: 화이트 모드에서 검은색 */
+    background-color: var(--accent-color); 
+    /* 아이콘 색상: 흰색 (검은색 배경에 대비) */
+    color: white; 
+}
+.stop-btn .material-symbols-rounded {
+    /* 아이콘 색상 명시 */
+    color: white; 
+}
+
+/* 📌 스타일 2: 최종 수정본 (텍스트 쏠림 해결) */
+.composer.style-default {
+    background: var(--bg-color); 
+    padding: 0 16px 24px 16px; 
+    border: none;
+}
+
+.composer.style-default .composer-inner {
+    max-width: 768px;
+    border-radius: 27px;
+    
+    /* 패딩 설정 */
+    padding: 0 4px 0 16px !important;
+    
+    box-shadow: var(--composer-shadow);
+    gap: 8px; 
+    flex-direction: row;
+    
+    /* 👇 버튼들을 바닥에 붙이기 위해 flex-end 유지 */
+    align-items: flex-end !important; 
+
+    margin-left: 68px !important; 
+    min-height: 52px !important;
+    
+    position: relative; 
+    overflow: visible; 
+}
+
+/* 👇 [핵심 수정] 입력창 감싸는 박스를 강제로 중앙 정렬시킴 */
+.composer.style-default .input-area-wrapper { 
+    flex: 1; 
+    margin-bottom: 0; 
+    padding-bottom: 0; 
+    min-width: 0; 
+    
+    /* 부모는 바닥 정렬이지만, '나 자신'은 높이를 꽉 채우고 내부를 중앙 정렬함 */
+    display: flex !important;
+    align-items: center !important; 
+    min-height: 52px !important;
+}
+
+.composer.style-default .simple-tools { display: none; }
+.composer.style-default .bottom-controls { display: contents; }
+
+.composer.style-default .input-container {
+    background: transparent; border: none; padding: 0; 
+    
+    /* 입력 컨테이너도 중앙 정렬 */
+    display: flex !important; 
+    align-items: center !important;
+    width: 100%;
+    min-height: 52px !important;
+}
+
+/* 👇 [핵심 수정] 텍스트 에디터 패딩을 줄여서 중앙 배치 유도 */
+.composer.style-default .prosemirror-editor {
+    /* Flex 중앙 정렬이 적용되므로 패딩은 최소한의 여백만 줌 */
+    padding: 10px 0 !important; 
+    
+    margin: 0 !important;
+    max-height: 150px;
+    width: 100%;
+}
+
+.composer.style-default .prosemirror-editor p {
+    margin: 0 !important;
+}
+.composer.style-default .mic-icon { display: none; }
+
+
+/* 📌 왼쪽 플러스 버튼 (다크모드 색상 변수 적용) */
+.composer.style-default .plus {
+    width: 52px !important; 
+    height: 52px !important;
+    border-radius: 50%;
+    
+    /* 👇 배경색을 사이트 기본 배경 변수로 변경 (다크모드 자동 적용) */
+    background: var(--surface-primary, var(--bg-color)) !important; 
+    border: 1px solid var(--border-color) !important; 
+    color: var(--text-sub) !important;
+    
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; 
+    cursor: pointer;
+    
+    position: absolute;
+    left: -64px !important;   
+    
+    /* 👇 바닥 고정 */
+    bottom: 0; 
+    margin-bottom: 0 !important; 
+    
+    box-shadow: var(--composer-shadow);
+    z-index: 10;
+}
+
+.composer.style-default .plus .material-symbols-rounded { 
+    font-size: 26px !important; 
+}
+
+
+/* 📌 오른쪽 컨트롤 영역 (전송 버튼) */
+.composer.style-default .right-controls {
+    /* 높이 고정 및 바닥 정렬 */
+    height: 52px !important;
+    min-height: 52px !important;
+    margin-bottom: 0 !important;
+    
+    display: flex; align-items: center; justify-content: flex-end;
+}
+
+.composer.style-default .right-controls button {
+    margin: 0;
+}
+/* ============================================ */
+
+/* Snackbar */
+#snackbar {
+  visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 30px; padding: 12px 20px; position: fixed; z-index: 1020; left: 50%; transform: translateX(-50%); bottom: 30px; font-size: 14px; transition: none; opacity: 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+#snackbar.show { visibility: visible; opacity: 1; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+@keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+@keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+/* Modal Styles */
+.modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--modal-overlay); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 1000; display: flex; justify-content: center; align-items: flex-end; }
+.modal-backdrop.visible { opacity: 1; visibility: visible; }
+.modal { width: 100%; max-width: 768px; background-color: var(--bg-color); border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px 16px 40px 16px; transform: translateY(100%); transition: transform 0.3s ease-out; color: var(--text-color); }
+.modal-backdrop.visible .modal { transform: translateY(0); }
+.modal-handle { width: 40px; height: 5px; background-color: var(--border-color); border-radius: 5px; margin: 0 auto 20px auto; }
+
+.modal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 24px; }
+.modal-grid-item { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 12px 0; background-color: var(--surface-secondary); border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-color); }
+.modal-grid-icon { width: 48px; height: 48px; background-color: var(--border-color); border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; }
+.modal-grid-icon .material-symbols-rounded { font-size: 24px; color: var(--text-color); }
+
+.modal-option { display: flex; align-items: center; padding: 12px 10px; font-size: 16px; font-weight: 500; cursor: pointer; border-radius: 8px; transition: background-color 0.1s ease; color: var(--text-color); }
+.modal-option:hover { background-color: var(--surface-hover); }
+.modal-option-icon { margin-right: 12px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
+.modal-option-icon .material-symbols-rounded { font-size: 20px; color: var(--text-color); }
+
+#settings-modal-backdrop { align-items: flex-end; justify-content: center; }
+#settings-modal { max-width: 768px; padding-top: 24px; padding-bottom: 40px; border-radius: 20px 20px 0 0; transform: translateY(100%); }
+.modal-backdrop.visible #settings-modal { transform: translateY(0); }
+#settings-modal h3 { font-size: 1.1em; font-weight: 600; margin: 0 0 16px 0; padding: 0 10px; color: var(--text-color); }
+
+/* UI & Theme Selector */
+.ui-style-selector { padding: 0 10px; margin-bottom: 24px; }
+.ui-style-label { font-size: 0.95em; color: var(--text-sub); margin-bottom: 10px; display: block; }
+.ui-style-options { display: flex; gap: 10px; }
+
+.ui-style-btn {
+    flex: 1; padding: 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    border-radius: 12px;
+    font-size: 14px; font-weight: 500; color: var(--text-color);
+    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    transition: all 0.2s;
+}
+.ui-style-btn.active {
+    border-color: var(--text-color);
+    background-color: var(--surface-hover);
+    font-weight: 600;
+}
+.ui-style-btn .preview-icon { font-size: 24px; color: #6b7280; }
+.ui-style-btn.active .preview-icon { color: var(--text-color); }
+
+.theme-btn-group { display: flex; gap: 8px; }
+.theme-btn {
+    flex: 1; padding: 10px; border: 1px solid var(--border-color); background-color: var(--surface-color);
+    border-radius: 10px; font-size: 14px; color: var(--text-color); cursor: pointer; text-align: center;
+}
+.theme-btn.active { background-color: var(--text-color); color: var(--bg-color); border-color: var(--text-color); font-weight: 600; }
+
+hr.modal-divider { border: 0; border-top: 1px solid var(--border-color); margin: 0 0 16px 0; }
+
+#reset-chat-button { color: var(--error-red); padding-left: 10px; padding-right: 10px; }
+#reset-chat-button .modal-option-icon { display: none; }
+
+#reset-confirm-modal-backdrop { align-items: center; z-index: 1010; }
+#reset-confirm-modal { max-width: 320px; border-radius: 12px; padding: 24px; transform: translateY(0); transition: opacity 0.3s ease, transform 0.3s ease; }
+#reset-confirm-modal .modal-handle { display: none; }
+#reset-confirm-modal h3 { font-size: 1.2em; margin: 0 0 10px 0; text-align: center; padding: 0; }
+#reset-confirm-modal p { font-size: 0.95em; color: var(--text-sub); margin-bottom: 24px; text-align: center; }
+.confirm-actions { display: flex; justify-content: space-between; gap: 10px; }
+.confirm-actions button { 
+    flex: 1; padding: 10px 15px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px;
+    border: 1px solid var(--border-color); transition: filter 0.2s;
+}
+.confirm-actions button:hover { filter: brightness(0.95); }
+[data-theme="dark"] .confirm-actions button:hover { filter: brightness(1.2); }
+
+/* MinsuGPT 정보 모달 */
+#about-modal-backdrop { align-items: flex-end; justify-content: center; }
+#about-modal { max-width: 768px; padding-top: 24px; padding-bottom: 40px; border-radius: 20px 20px 0 0; transform: translateY(100%); }
+.modal-backdrop.visible #about-modal { transform: translateY(0); }
+#about-modal h3 { font-size: 1.1em; font-weight: 600; margin: 0 0 16px 0; padding: 0 12px; color: var(--text-color); font-size: 15px; }
+
+.about-info-row { padding: 4px 12px; color: var(--text-sub); font-size: 15px; }
+.creator-section-title { margin-top: 24px; padding: 0 12px; font-weight: 600; margin-bottom: 10px; color: var(--text-color); font-size: 15px; }
+.creator-card { 
+    background-color: var(--surface-secondary); 
+    border-radius: 12px; padding: 16px; 
+    margin: 0 10px; display: flex; align-items: center; gap: 12px; 
+}
+.creator-avatar { width: 40px; height: 40px; background-color: var(--surface-hover); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.creator-info { display: flex; flex-direction: column; }
+.creator-name { font-weight: 600; font-size: 16px; color: var(--text-color); }
+.creator-role { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+.copyright-text { 
+    margin-top: 40px; text-align: center; 
+    font-size: 12px; color: var(--text-sub); opacity: 0.7; 
+  }
+
+/* 사이드바 (채팅 목록) 스타일 */
+#sidebar-backdrop {
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    align-items: stretch;
+}
+.sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width); 
+    max-width: 80%;
+    height: 100%;
+    background-color: var(--bg-color);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* 부드러운 애니메이션 */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    flex-shrink: 0; 
+    z-index: 110;
+}
+.modal-backdrop.visible .sidebar {
+    transform: translateX(0);
+}
+.sidebar-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+.new-chat-btn {
+    display: flex; align-items: center; gap: 8px;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    padding: 10px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    white-space: nowrap; 
+}
+.new-chat-btn .material-symbols-rounded { font-size: 20px; }
+.sidebar-close {
+    cursor: pointer;
+    color: var(--text-sub);
+    padding: 8px;
+    border-radius: 50%;
+}
+.sidebar-close:hover { background-color: var(--surface-hover); color: var(--text-color); }
+
+.sidebar-search {
+    padding: 16px;
+    position: relative;
+    border-bottom: 1px solid var(--border-color);
+}
+.sidebar-search input {
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-secondary);
+    color: var(--text-color);
+    font-size: 14px;
+    outline: none;
+}
+.sidebar-search .material-symbols-rounded {
+    position: absolute; left: 26px; top: 50%; transform: translateY(-50%);
+    color: var(--text-sub); font-size: 20px;
+}
+
+.sidebar-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar-list-item {
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+    color: var(--text-color);
+    group: relative;
+}
+.sidebar-list-item:hover, .sidebar-list-item.active {
+    background-color: var(--surface-secondary);
+}
+.sidebar-list-item-content {
+    display: flex; flex-direction: column; overflow: hidden;
+}
+.sidebar-list-item-title {
+    font-weight: 500; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.sidebar-list-item-date {
+    font-size: 11px; color: var(--text-sub); margin-top: 4px;
+    white-space: nowrap;
+}
+.sidebar-item-actions {
+    display: none;
+    align-items: center;
+    gap: 4px;
+}
+.sidebar-list-item:hover .sidebar-item-actions { display: flex; }
+
+.item-action-btn {
+    width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: center;
+    color: var(--text-sub);
+}
+.item-action-btn:hover { background-color: rgba(0,0,0,0.1); color: var(--text-color); }
+
+.sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    display: flex; flex-direction: column; gap: 8px;
+}
+.sidebar-menu-item {
+    padding: 10px;
+    border-radius: 8px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--text-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+.sidebar-menu-item:hover { background-color: var(--surface-hover); }
+.sidebar-menu-item.delete-all { color: var(--error-red); }
+.sidebar-menu-item.delete-all .material-symbols-rounded { color: var(--error-red); }
+
+/* 🌟 [신규] PC 미니 사이드바 스타일 */
+.mini-sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: var(--mini-sidebar-width);
+    background-color: var(--bg-color);
+    border-right: 1px solid var(--border-color);
+    display: none; /* 기본적으로 숨김 (모바일 등) */
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    z-index: 95;
+    transition: background-color 0.3s ease;
+}
+
+.mini-sidebar-icon {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px;
+    cursor: pointer;
+    color: var(--text-sub);
+    margin-bottom: 12px;
+    transition: background-color 0.2s, color 0.2s;
+}
+.mini-sidebar-icon:hover {
+    background-color: var(--surface-hover);
+    color: var(--text-color);
+}
+.mini-sidebar-icon.delete-all { color: var(--error-red); opacity: 0.7; margin-top: auto; margin-bottom: 20px; }
+.mini-sidebar-icon.delete-all:hover { opacity: 1; background-color: rgba(239, 68, 68, 0.1); }
+
+/* 스크롤 버튼 컨테이너 */
+#scroll-to-bottom-container {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 160px; 
+    z-index: 95; 
+    pointer-events: none; 
+}
+
+#scrollDownButton {
+    background-color: var(--surface-color); 
+    border: 1px solid var(--border-color); 
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s, transform 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#scrollDownButton:hover {
+    transform: scale(1.05);
+}
+
+#scrollDownButton.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#scrollDownButton.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#scrollDownButton::after {
+    content: '';
+    display: block;
+    width: 8px; 
+    height: 8px; 
+    border: 2px solid var(--text-sub); 
+    border-top: none; 
+    border-left: none; 
+    transform: translateY(-2px) rotate(45deg); 
+}
+
+/* ================================================================= */
+/* 🌟🌟🌟 [PC 전용] 사이드바 PUSH 효과 및 스크롤 개선 🌟🌟🌟 */
+/* ================================================================= */
+
+@media (min-width: 769px) {
+    /* 🌟 PC에서는 닫기 버튼 숨김 */
+    #sidebar-close {
+        display: none;
+    }
+
+    /* 1. 사이드바 백드롭: 투명하게 만들고 공간만 차지하지 않게 설정 */
+    #sidebar-backdrop {
+        background-color: transparent !important;
+        width: 0;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        z-index: 90;
+        position: fixed;
+        top: 0; bottom: 0; left: 0;
+        overflow: hidden; 
+    }
+
+    /* 사이드바가 열렸을 때 백드롭이 공간(300px)을 인식하도록 함 */
+    #sidebar-backdrop.visible {
+        width: var(--sidebar-width);
+    }
+
+    /* 사이드바: 기본 숨김 상태에서 시작 */
+    .sidebar {
+        transform: translateX(-100%);
+        border-right: 1px solid var(--border-color);
+        box-shadow: none;
+    }
+    
+    /* 사이드바 열림: 제자리로 이동 */
+    .modal-backdrop.visible .sidebar {
+        transform: translateX(0);
+    }
+    
+    /* 🌟 미니 사이드바 제어: 사이드바가 닫혀있을 때 보임 */
+    body:not(.sidebar-open) .mini-sidebar {
+        display: flex;
+    }
+
+    /* 2. 헤더 밀기 애니메이션 (미니 사이드바 고려) */
+    .header {
+        left: var(--mini-sidebar-width); 
+        width: calc(100% - var(--mini-sidebar-width));
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+        will-change: left, width; 
+    }
+
+    body.sidebar-open .header {
+        left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+
+    /* 3. 메인 컨텐츠 밀기 */
+    .content-wrapper {
+        margin-left: var(--mini-sidebar-width);
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body.sidebar-open .content-wrapper {
+        margin-left: var(--sidebar-width);
+    }
+    
+    /* 4. 입력창(Composer) 및 그라데이션 밀기 */
+    .composer, .composer-gradient-overlay {
+        left: var(--mini-sidebar-width);
+        width: calc(100% - var(--mini-sidebar-width));
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s, opacity 0.3s;
+    }
+
+    body.sidebar-open .composer {
+        left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+    
+    body.sidebar-open .composer-gradient-overlay {
+        left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+
+    /* 5. 스크롤 버튼 중앙 위치 보정 */
+    #scroll-to-bottom-container {
+        /* 미니 사이드바(60)의 절반(30) 만큼 이동 */
+        left: calc(50% + 30px);
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body.sidebar-open #scroll-to-bottom-container {
+        /* 사이드바(300)의 절반(150) 만큼 이동 */
+        left: calc(50% + 150px);
+    }
+}
+
+
+/* style.css 파일의 @media (max-width: 768px) 블록 안에 추가/수정 */
+
+@media (max-width: 768px) {
+    /* 1. 툴 버튼 크기 축소 및 간격 조절 (겹침 방지 핵심) */
+    .tool-btn {
+        /* 버튼 높이는 유지하되, 좌우 패딩을 대폭 줄여서 버튼 너비를 줄입니다. */
+        padding: 0 8px !important; /* 이전 (0 14px 0 10px)에서 크게 줄임 */
+        font-size: 12px !important; /* 텍스트 크기도 줄여서 공간 확보 */
+        height: 36px !important; /* 모바일에서 높이도 살짝 줄여볼 수 있습니다. (선택적) */
+    }
+
+    /* 2. 툴 버튼 그룹과 전송 버튼 간의 간격 확보 (겹침 방지 보강) */
+    .composer.style-simple .bottom-controls {
+        /* 두 버튼 그룹(.simple-tools와 .right-controls) 사이의 최소 간격을 줍니다. */
+        gap: 8px; /* 두 그룹 사이에 8px의 간격 확보 */
+    }
+    
+    /* 3. 전송 버튼 위치 조정 (오른쪽으로 확실히 이동) */
+    /* .send-btn에 오른쪽 마진을 더 크게 주어 확실히 안으로 들어오게 합니다. */
+    .composer.style-simple .send-btn {
+        margin-left: 8px !important; /* 4px보다 큰 8px로 설정 */
+    }
+    
+    /* 4. (선택적) 전송 버튼 그룹의 축소 방지 */
+    /* 전송 버튼 그룹이 공간 부족으로 축소되는 것을 방지합니다. */
+    .composer.style-simple .right-controls {
+        flex-shrink: 0; 
+    }
+}
+
+/* =========================================== */
+/* 9. 로그인 모달 스타일 수정 (최종: 디자인 및 충돌 해결) */
+/* =========================================== */
+
+/* 1. Backdrop (배경) 스타일: 중앙 정렬 및 블러 적용 */
+.login-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    
+    /* 중앙 정렬 */
+    display: flex !important; 
+    align-items: center;
+    justify-content: center;
+    
+    /* 블러 효과 */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    background-color: var(--modal-overlay); 
+    
+    /* JS에 의해 닫히기 전까지 표시 */
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+
+/* 2. Modal Content (로그인 창 본체) 스타일 */
+.login-modal-content {
+    max-width: 320px;
+    width: 90%; 
+    background: var(--surface-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    
+    border-radius: 12px !important;
+    padding: 24px !important;
+    transform: translateY(0) !important;
+}
+
+/* 헤더 텍스트 간격 조정 */
+.login-header {
+    text-align: center; 
+    margin-bottom: 30px; 
+    margin-top: 10px;
+}
+
+/* 로고 스타일 */
+.login-logo {
+    display: block;
+    width: 150px;
+    height: auto;
+    margin: 0 auto;
+    filter: none;
+    transition: filter 0.3s ease;
+}
+
+/* 다크 모드 로고 반전 */
+[data-theme="dark"] .login-logo {
+    filter: invert(1) hue-rotate(180deg); 
+}
+
+/* 접속하기 버튼 스타일 */
+.login-confirm-btn {
+    width: 100%; 
+    height: 48px;
+    background: #000000 !important; 
+    
+    /* ✅ 핵심 수정: 버튼 텍스트를 흰색으로 강제 고정 */
+    color: #ffffff !important; 
+    
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    border-radius: 9999px !important; 
+    padding: 0 24px;
+    transition: background-color 0.3s;
+}
+
+.login-confirm-btn:hover {
+    background: #333333 !important;
+}
+
+/* 에러 메시지 스타일 */
+.access-error {
+    color: var(--error-red); 
+    font-size: 0.9em; 
+    text-align: center; 
+    margin-bottom: 10px;
+}
+
+/* --- Floating Label Input (텍스트박스) 스타일 --- */
+
+/* Input 그룹 컨테이너 */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* 비밀번호 필드 아래쪽 간격 조정 */
+.login-pw-group {
+    margin-bottom: 30px;
+}
+
+/* 텍스트박스 스타일 */
+.floating-input {
+    width: 100%;
+    padding: 18px 12px 6px 12px; 
+    
+    /* ✅ 핵심 수정: 브라우저 기본 스타일 제거 (그라데이션 및 충돌 방지) */
+    -webkit-appearance: none;
+    appearance: none;
+    
+    background: transparent; 
+    /* 테두리 색상: var(--border-color)로 명확히 지정하여 충돌 방지 */
+    border: 1px solid var(--border-color);
+    
+    border-radius: 8px;
+    outline: none;
+    font-size: 16px;
+    color: var(--text-color);
+    transition: border-color 0.2s;
+}
+
+/* 텍스트박스 포커스 시 테두리 색상 변경 */
+.floating-input:focus {
+    border-color: var(--primary-blue);
+}
+
+/* 라벨 (Placeholder 역할) 스타일 */
+.floating-label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sub);
+    pointer-events: none;
+    transition: 
+        top 0.2s ease, 
+        font-size 0.2s ease, 
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+/* 포커스되거나 내용이 있을 때 라벨 스타일 (위로 올라감) */
+.floating-input:focus + .floating-label,
+.floating-input:not(:placeholder-shown) + .floating-label {
+    top: 4px;
+    font-size: 12px;
+    color: var(--primary-blue);
+    transform: translateY(0);
+    background: var(--surface-color); 
+    padding: 0 4px;
+    margin-left: -4px;
+}
+
+/* --- 모바일 최적화 (Max-width 360px 이하) --- */
+@media (max-width: 360px) {
+    .login-modal-content {
+        padding: 20px !important;
+    }
+    .login-logo {
+        width: 130px;
+    }
+    .login-header {
+        font-size: 1.2em;
+        margin-bottom: 25px !important;
+    }
+    .floating-input {
+        font-size: 15px;
+    }
+    .login-confirm-btn {
+        height: 44px;
+        font-size: 15px;
+    }
+}
