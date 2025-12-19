@@ -11,25 +11,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   
   <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
-  <link rel="icon" type="image/png" href="https://i.postimg.cc/MKBHwqWk/logogogo.png">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/kg01fcVG/logop.png">
   <link rel="stylesheet" href="style.css"> 
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <script>
+ <script>
     // 허용할 도메인 리스트
     const ALLOWED_REFERRERS = [
         'https://ai.minsugpt.kro.kr/',
         'https://user.minsugpt.kro.kr/'
     ];
-    const REDIRECT_URL = 'https://minsugpt.kro.kr';
+    const REDIRECT_URL = 'https://status.minsugpt.kro.kr';
     const referrer = document.referrer;
 
     // some() 함수를 사용하여 현재 referrer가 허용 리스트 중 하나로 시작하는지 확인합니다.
     const isAllowed = ALLOWED_REFERRERS.some(url => referrer.startsWith(url));
 
     if (referrer === '' || !isAllowed) {
-        window.location.replace(REDIRECT_URL);
+       // window.location.replace(REDIRECT_URL);
     }
 </script>
 </head>
@@ -408,6 +408,22 @@
         </div>
       
         <div class="header-pill-group">
+            <div class="header-model-wrapper" style="position: relative;">
+                <div class="header-model-pill" id="header-model-select">
+                    <span id="header-model-text">G-5 Pro</span>
+                    <span class="material-symbols-rounded">expand_more</span>
+                </div>
+                <div class="model-dropdown-menu header-style" id="header-model-dropdown">
+                    <div class="model-option-item selected" data-model="g5-pro">
+                        <span>G-5 Pro</span>
+                        <span class="material-symbols-rounded check-icon">check</span>
+                    </div>
+                    <div class="model-option-item" data-model="g4">
+                        <span>G-4 beta</span>
+                        <span class="material-symbols-rounded check-icon">check</span>
+                    </div>
+                </div>
+            </div>
             <div class="header-icon" id="header-new-chat" aria-label="새 채팅">
                 <span class="material-symbols-rounded">edit_square</span>
             </div>
@@ -427,10 +443,12 @@
 
     <main id="content-wrapper" class="content-wrapper">
         
-        <div id="initial-content" style="width: 100%; display: flex; justify-content: flex-start;">
-    <img src="https://i.postimg.cc/RV51q6B7/vdas.png" 
-         alt="MinsuGPT 시작" 
-         style="width: 90%; max-width: 400px; height: auto; opacity: 0.8; border-radius: 20px;">
+       <div id="initial-content">
+    <div class="greeting-header">
+        <img src="https://i.postimg.cc/zDxzLLMK/21313213.png" alt="Greeting Icon" class="greeting-icon">
+        <div class="greeting-sub">안녕하세요</div>
+    </div>
+    <div class="greeting-main">무엇을 도와드릴까요?</div>
 </div>
 
         <div id="chat-messages" class="chat-messages"></div>
@@ -471,11 +489,25 @@
                     <span class="material-symbols-rounded">image</span>
                     이미지
                 </div>
-                <div class="tool-btn" id="tool-study">
-                    <span class="material-symbols-rounded">auto_stories</span>
-                    학습하기
+                
+                <div class="tool-wrapper" style="position: relative;">
+                    <div class="tool-btn" id="tool-model-selector">
+                        <span class="material-symbols-rounded">smart_toy</span>
+                        <span id="simple-model-text">G-5 Pro</span>
+                    </div>
+                    
+                    <div class="model-dropdown-menu simple-style" id="simple-model-dropdown">
+                        <div class="model-option-item selected" data-model="g5-pro">
+                            <span>G-5 Pro</span>
+                            <span class="material-symbols-rounded check-icon">check</span>
+                        </div>
+                        <div class="model-option-item" data-model="g4">
+                            <span>G-4</span>
+                            <span class="material-symbols-rounded check-icon">check</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                </div>
             
             <div class="right-controls">
                  <div class="mic-voice-container">
@@ -539,14 +571,10 @@
                         <span class="material-symbols-rounded preview-icon">check_circle</span>
                         기본 (둥근형)
                     </button>
-
-
-
-
-
-
-
-                  
+                    <button class="ui-style-btn" data-style="simple">
+                        <span class="material-symbols-rounded preview-icon">horizontal_rule</span>
+                        심플 (바형)
+                    </button>
                 </div>
             </div>
             
@@ -626,9 +654,6 @@
 
   </div>
 
-
-
-  
   <script src="script.js"></script>
 </body>
-</html>
+              </html>
